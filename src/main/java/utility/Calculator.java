@@ -25,8 +25,10 @@ public class Calculator {
         else if (values[i].matches("d"))
           mem.push(mem.peek());
         else {
+          // remove top of stack
           int temp = mem.pop();
 
+          // operator cannot be applied to single value
           if (stackEmpty()) {
             System.out.format("Error: insufficient input for operator '%s'\n", values[i]);
             mem.push(temp);
@@ -44,6 +46,7 @@ public class Calculator {
             mem.push(mem.pop() % temp);
         }
       else if (values[i].matches("clear"))
+        // erase memory
         mem = new Stack<Integer>();
       else // push integer to stack
         mem.push(Integer.parseInt(values[i]));
