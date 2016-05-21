@@ -11,14 +11,14 @@ public class Calculator {
     mem = new Stack<Integer>();
   }
 
-  public void enter(String[] values) {
+  public Stack<Integer> enter(String[] values) {
 
     // evaluate expression
     for (int i = 0; i < values.length; i++) {
 
       if (isOperator(values[i]) && stackEmpty()) { 
         System.out.format("Error: insufficient input for '%s' operator\n", values[i]);
-        return; 
+        return mem; 
       }
 
       int temp, result; 
@@ -53,32 +53,30 @@ public class Calculator {
 	mem.push(mem.peek());
       else if (values[i].matches("clear")) {
 	mem = new Stack<Integer>();
-	return;
+	return mem;
       }
       else
 	mem.push(Integer.parseInt(values[i]));
     }
-  }
 
-  public Stack<Integer> getResult() {
     return mem;
   }
 
   public boolean stackEmpty() {
 
-  // if stack is empty or has only one value, operator cannot be applied
-  int temp;
-  try {
-    temp = mem.pop();
-  } catch (EmptyStackException e) {
-    return true;
-  }
-  try {
-    mem.peek();
-  } catch (EmptyStackException e) {
-    mem.push(temp);
-    return true;
-  }
+    // if stack is empty or has only one value, operator cannot be applied
+    int temp;
+    try {
+      temp = mem.pop();
+    } catch (EmptyStackException e) {
+      return true;
+    }
+    try {
+      mem.peek();
+    } catch (EmptyStackException e) {
+      mem.push(temp);
+      return true;
+    }
 
   mem.push(temp);
   return false;

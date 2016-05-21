@@ -12,9 +12,10 @@ class CalculatorApp {
 
       // get user input
       Scanner in = new Scanner(System.in);
+      String[] valid_inputs;
       while(in.hasNext()) {
-        calc.enter(parse(in.nextLine()));
-        Stack<Integer> result = calc.getResult();
+        valid_inputs = parse(in.nextLine());
+        Stack<Integer> result = calc.enter(valid_inputs);
         System.out.println(result.toString().substring(1, result.toString().length() -1 ));
       }
     }
