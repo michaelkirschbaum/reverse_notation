@@ -9,10 +9,11 @@ public class CalculatorTest {
   public void testEnter() {
     Calculator calc = new Calculator();
 
-    assertEquals(true , true);  
+    assertEquals(true, true);
   }
 
   @Test
+  // checks whether there is more than one value in stack
   public void testStackEmpty() {
     Calculator calc = new Calculator();
 
@@ -33,5 +34,6 @@ public class CalculatorTest {
      assertFalse(calc.isOperator("23"));
      assertFalse(calc.isOperator("++"));
      assertFalse(calc.isOperator("^"));
+     assertFalse(calc.isOperator("2.5"));
   }
 }

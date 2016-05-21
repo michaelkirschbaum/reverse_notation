@@ -15,8 +15,10 @@ class CalculatorApp {
       String[] valid_inputs;
       while(in.hasNext()) {
         valid_inputs = parse(in.nextLine());
-        Stack<Integer> result = calc.enter(valid_inputs);
-        System.out.println(result.toString().substring(1, result.toString().length() -1 ));
+        if (valid_inputs != null) {
+          Stack<Integer> result = calc.enter(valid_inputs);
+          if (result != null) { System.out.println(result.toString().substring(1, result.toString().length() -1 )); }
+        }
       }
     }
 
@@ -30,7 +32,7 @@ class CalculatorApp {
           Integer.parseInt(values[i]);
         } catch (NumberFormatException e) {
           System.out.format("Error: '%s' is not an integer or valid operator\n", values[i]);
-          return new String[0];
+          return null;
         }
     }
 

@@ -15,70 +15,50 @@ public class Calculator {
 
     // evaluate expression
     for (int i = 0; i < values.length; i++) {
+      if (isOperator(values[i]))
+        if (stackEmpty()) {
+          System.out.format("Error: insufficient input for operator '%s'\n", values[i]);
+          return null;
+        }
+        else if (values[i].matches("p"))
+          System.out.println(mem.pop());
+        else if (values[i].matches("d"))
+          mem.push(mem.peek());
+        else {
+          int temp = mem.pop();
 
-      if (isOperator(values[i]) && stackEmpty()) { 
-        System.out.format("Error: insufficient input for '%s' operator\n", values[i]);
-        return mem; 
-      }
-
-      int temp, result; 
-      if (values[i].matches("\\+")) {
-        temp = mem.pop();	
-        result = mem.pop() + temp;
-        mem.push(result);
-      }
-      else if (values[i].matches("-")) {
-        temp = mem.pop();
-        result = mem.pop() - temp;
-        mem.push(result);
-      }
-      else if (values[i].matches("\\*")) {
-        temp = mem.pop();
-        result = mem.pop() * temp;
-        mem.push(result);
-      }
-      else if (values[i].matches("/")) {
-        temp = mem.pop();
-        result = mem.pop() / temp;
-        mem.push(result);
-      }
-      else if (values[i].matches("%")) {
-        temp = mem.pop();
-        result = mem.pop() % temp;
-        mem.push(result);
-      }
-      else if (values[i].matches("p"))
-        System.out.println(mem.pop());
-      else if (values[i].matches("d"))
-	mem.push(mem.peek());
-      else if (values[i].matches("clear")) {
-	mem = new Stack<Integer>();
-	return mem;
-      }
-      else
-	mem.push(Integer.parseInt(values[i]));
+          if (stackEmpty()) {
+            System.out.format("Error: insufficient input for operator '%s'\n", values[i]);
+            mem.push(temp);
+            return null;
+          }
+          else if (values[i].matches("\\+"))
+            mem.push(mem.pop() + temp);
+          else if (values[i].matches("-"))
+            mem.push(mem.pop() - temp);
+          else if (values[i].matches("\\*"))
+            mem.push(mem.pop() * temp);
+          else if (values[i].matches("/"))
+            mem.push(mem.pop() / temp);
+          else if (values[i].matches("%"))
+            mem.push(mem.pop() % temp);
+        }
+      else if (values[i].matches("clear"))
+        mem = new Stack<Integer>();
+      else // push integer to stack
+        mem.push(Integer.parseInt(values[i]));
     }
 
     return mem;
   }
 
   public boolean stackEmpty() {
-
-    // if stack is empty or has only one value, operator cannot be applied
-    int temp;
-    try {
-      temp = mem.pop();
-    } catch (EmptyStackException e) {
-      return true;
-    }
     try {
       mem.peek();
     } catch (EmptyStackException e) {
-      mem.push(temp);
       return true;
     }
-
-  mem.push(temp);
+  
   return false;
   }
 
