@@ -1,5 +1,4 @@
 package utility;
-
 import java.util.Stack;
 import java.util.regex.Pattern;
 import java.util.EmptyStackException;
@@ -12,44 +11,17 @@ public class Calculator {
     mem = new Stack<Integer>();
   }
 
-  public void enter(String input) {
-    // parse user input
-    String[] values = input.split("\\s+");
-
-    // check whether values are valid
-    for (int i = 0; i < values.length; i++) {
-      if (!isOperator(values[i]) && !values[i].matches("clear"))
-   	try {
-	  Integer.parseInt(values[i]);
-	} catch (NumberFormatException e) {
-	  System.out.format("Error: '%s' is not an integer or valid operator\n", values[i]);
-          return;
-	}
-    }
+  public void enter(String[] values) {
 
     // evaluate expression
     for (int i = 0; i < values.length; i++) {
 
-      // check whether input is sufficient for operator
-      int temp;
-      if (isOperator(values[i])) {
-        try {
-          temp = mem.pop();
-        } catch (EmptyStackException e) {
-          System.out.format("Error: insufficient input for '%s' operator\n", values[i]);
-	  return;
- 	}
-        try {
-	  mem.peek();
-	} catch (EmptyStackException e) {
-	  mem.push(temp);
-	  System.out.format("Error: insufficient input for '%s' operator\n", values[i]);
-	  return;
-	}
-	mem.push(temp);
+      if (isOperator(values[i]) && stackEmpty()) { 
+        System.out.format("Error: insufficient input for '%s' operator\n", values[i]);
+        return; 
       }
 
-      int result; 
+      int temp, result; 
       if (values[i].matches("\\+")) {
         temp = mem.pop();	
         result = mem.pop() + temp;
@@ -86,16 +58,34 @@ public class Calculator {
       else
 	mem.push(Integer.parseInt(values[i]));
     }
-	
-    showResult();
   }
 
-  public void showResult() {
-    System.out.println(mem.toString().substring(1, mem.toString().length() - 1));
+  public Stack<Integer> getResult() {
+    return mem;
   }
 
-  public boolean isOperator (String s) {
-    if (s.matches("[*+-/%pd]"))
+  public boolean stackEmpty() {
+
+  // if stack is empty or has only one value, operator cannot be applied
+  int temp;
+  try {
+    temp = mem.pop();
+  } catch (EmptyStackException e) {
+    return true;
+  }
+  try {
+    mem.peek();
+  } catch (EmptyStackException e) {
+    mem.push(temp);
+    return true;
+  }
+
+  mem.push(temp);
+  return false;
+  }
+
+  public boolean isOperator(String value) {
+    if (value.matches("[*+-/%pd]"))
       return true;
     else
       return false;
