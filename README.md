@@ -9,12 +9,19 @@ Java
 Maven-4.0.0
 
 Operators:
-+ = add
-- = subtrat
-* = multiply
+
+\+ = add
+
+\- = subtract
+
+\* = multiply
+
 / = divide
+
 % = modulo
+
 p = remove and print last value
+
 d = duplicate last value
 
 To build run command:
